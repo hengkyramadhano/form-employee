@@ -24,6 +24,22 @@
 body {font-family: Arial, Helvetica, sans-serif;}
 * {box-sizing: border-box;}
 
+.row {
+    border-collapse: collapse;
+    border-spacing: 0;
+    width: 100%;
+    border: 1px solid #ddd;
+}
+
+.posisi{
+	text-align: left;
+    padding: 16px;
+}
+
+.zebra:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
 /* Button used to open the contact form - fixed at the bottom of the page */
 .open-button {
   background-color: #0c69ff;
@@ -33,8 +49,8 @@ body {font-family: Arial, Helvetica, sans-serif;}
   cursor: pointer;
   opacity: 0.8;
   position: fixed;
-  bottom: 55px;
-  right: 55px;
+  bottom: 35px;
+  right: 35px;
   width: 175px;
 }
 
@@ -55,8 +71,8 @@ body {font-family: Arial, Helvetica, sans-serif;}
   background-color: white;
 }
 
-/* Full-width input fields */
-.form-container input[type=text], .form-container input[type=email], .form-container input[type=date], .form-container input[type=Number], 
+/* Full-width input zebras */
+.form-container input[type=text], .form-container input[type=email], .form-container input[type=date], .form-container input[type=Number],  .form-container select[name="posisi"],
 .form-container input[type=Address], .form-container select[name="rekBank"], .form-container select[name="provinsi"], .form-container select[name="kota"] {
   width: 100%;
   padding: 15px;
@@ -112,11 +128,40 @@ $dbname = "employees";
 
 // Create connection
 $conn = mysqli_connect($servername, $username, $password, $dbname);
+$result = mysqli_query($conn, 'SELECT * FROM employee');
 // Check connection
 if (!$conn) {
     die("Connection failed: " . mysqli_connect_error());
 } 
 ?>
+
+<table class = "row">
+	<tr class = "zebra">
+		
+		<th class='posisi'>Name</th>
+		<th class='posisi'>Phone</th>
+		<th class='posisi'>Born</th>
+		<th class='posisi'>Address</th>
+		<th class='posisi'>Current Position</th>
+		<th class='posisi'>KTP file</th>
+		<th class='posisi'>Action</th>
+
+	</tr>
+	<?php
+	while ($row=mysqli_fetch_array($result))
+	{
+	   echo "<tr class = 'zebra'>";
+	   echo "<td class='posisi'>".$row['naDep']."</td>";
+	   echo "<td class='posisi'>".$row['telpon']."</td>";
+	   echo "<td class='posisi'>".$row['dob']."</td>"; 
+	   echo "<td class='posisi'>".$row['jalan']."</td>";
+	   echo "<td class='posisi'>".$row['posisi']."</td>";
+	   echo "<td class='posisi'>".$row['path']."</td>";
+	   echo "</tr>";
+	}
+	?>
+</table>
+
 <button class="open-button" onclick="openForm()">Add New Employee</button>
 
 <div class="form-popup" id="myForm" style="overflow: auto;">
@@ -128,10 +173,6 @@ if (!$conn) {
     		<td><input type="text" placeholder="Enter First Name" name="naDep" required></td>
     		<td><input type="text" placeholder="Enter Last Name" name="naBel" required></td>
     	</tr>
-    	<!-- <tr>
-    		<td><label for="naBel"><b>Last Name<div style="color:#F00";>*</div></b></label></td>
-    		<td><input type="text" placeholder="Enter Last Name" name="naBel" required></td>
-    	</tr> -->
     	<tr>
     		<td><label for="dob"><b>Date of Birth</b></label></td>
     		<td><input type="date" placeholder="Choose date" name="dob"></td>
@@ -163,7 +204,6 @@ if (!$conn) {
 			    <?php } ?>
 			  	</select><br />
 			</td>
-    		<!-- <td><label for="city"><b>City</b></label></td> -->
     		<?php
     		$sql_kota = mysqli_query($conn, 'SELECT * FROM kota');
     		?>
@@ -173,7 +213,8 @@ if (!$conn) {
 			    	while ($row_kota = mysqli_fetch_array($sql_kota)) {
 			    	?>
     			<option value="<?php echo $row_kota['nama_kota'] ?>">
-			    		<?php echo $row_kota['nama_kota'] ?>
+			    		<?php echo $row_kota['nama_kota'];
+			    		echo $id_prov; ?>
 			    	</option>
 			    	<?php } ?>
     		</select></td>
@@ -183,18 +224,28 @@ if (!$conn) {
     		<td><input type="Address" placeholder="Address" name="jalan"></td>
     		<td><input type="text" placeholder="Postcode" name="kdPos"></td>
     	</tr>
-    	<!-- <tr>
-    		<td><label for="kdPos"><b>Postcode</b></label></td></td>
-    		<td><input type="text" placeholder="ex: 10230" name="kdPos"></td>
-    	</tr> -->
     	<tr>
     		<td><label for="noKtp"><b>No. KTP</b></label></td>
     		<td><input type="text" placeholder="(Kartu Tanda Penduduk)" name="noKtp" required></td>
     	</tr>
     	<tr>
+    		<td><label for="posisi"><b>Current Position</b></label></td>
+    		<td>
+			  	<select name="posisi">
+			  		<option value="">Choose Current Position</option>
+			    	<option value="CEO">CEO</option>
+			    	<option value="CTO">CTO</option>
+			    	<option value="CFO">CFO</option>
+			    	<option value="CMO">CMO</option>
+			    	<option value="COO">COO</option>
+			  	</select>
+			</td>
+    	</tr>
+    	<tr>
     		<td><label for="rekBank"><b>Bank Account</b></label></td>
     		<td>
 			  	<select name="rekBank">
+			  		<option value="">Choose Account Bank</option>
 			    	<option value="bca">BCA</option>
 			    	<option value="bni">BNI</option>
 			    	<option value="bri">BRI</option>

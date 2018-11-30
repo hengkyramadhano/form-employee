@@ -1,6 +1,6 @@
 <?php
 
-if (isset($_POST['naDep']) && isset($_POST['naBel']) && isset($_POST['dob']) && isset($_POST['telepon']) && isset($_POST['email']) && isset($_POST['provinsi']) && isset($_POST['kota']) && isset($_POST['jalan']) && isset($_POST['kdPos']) && isset($_POST['noKtp']) && isset($_POST['rekBank']) && isset($_POST['noRek']) ) { 
+if (isset($_POST['naDep']) && isset($_POST['naBel']) && isset($_POST['dob']) && isset($_POST['telepon']) && isset($_POST['email']) && isset($_POST['provinsi']) && isset($_POST['kota']) && isset($_POST['jalan']) && isset($_POST['kdPos']) && isset($_POST['noKtp']) && isset($_POST['posisi']) && isset($_POST['rekBank']) && isset($_POST['noRek']) ) { 
     $naDep = $_POST['naDep'];
     $naBel = $_POST['naBel'];
     $dob = $_POST['dob'];
@@ -11,6 +11,7 @@ if (isset($_POST['naDep']) && isset($_POST['naBel']) && isset($_POST['dob']) && 
     $jalan = $_POST['jalan'];
     $kdPos = $_POST['kdPos'];
     $noKtp = $_POST['noKtp'];
+    $posisi = $_POST['posisi'];
     $rekBank = $_POST['rekBank'];
     $noRek = $_POST['noRek'];
 }
@@ -38,7 +39,7 @@ if(isset($_POST['save_btn']))
 
 			move_uploaded_file($filetemp, $filepath);
 
-			$query = mysqli_query($conn,"call imageInsert('$naDep', '$naBel', '$dob', '$telepon', '$email', '$provinsi', '$kota', '$jalan', '$kdPos', '$noKtp', '$rekBank', '$noRek', '$filename', '$filepath')");
+			$query = mysqli_query($conn,"call imageInsert('$naDep', '$naBel', '$dob', '$telepon', '$email', '$provinsi', '$kota', '$jalan', '$kdPos', '$noKtp', '$posisi', '$rekBank', '$noRek', '$filename', '$filepath')");
 			if($query)
 			{
 				echo "<script language='javascript'> 
